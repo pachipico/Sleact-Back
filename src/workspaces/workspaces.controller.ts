@@ -1,6 +1,17 @@
-import { Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { UndefinedToNull } from 'src/common/interceptors/undefinedToNull.interceptor';
 import { WorkspacesService } from './workspaces.service';
 
+@UseInterceptors(UndefinedToNull)
+@ApiTags('WORKSPACE')
 @Controller('api/workspaces')
 export class WorkspacesController {
   constructor(private workspacesService: WorkspacesService) {}
