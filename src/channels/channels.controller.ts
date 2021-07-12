@@ -1,6 +1,10 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, UseInterceptors } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { UndefinedToNull } from 'src/common/interceptors/undefinedToNull.interceptor';
 import { ChannelsService } from './channels.service';
 
+@UseInterceptors(UndefinedToNull)
+@ApiTags('CHANNEL')
 @Controller('api/workspaces/:workspace/channels')
 export class ChannelsController {
   constructor(private channelsService: ChannelsService) {}
