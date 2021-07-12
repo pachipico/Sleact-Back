@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello  afdsasfasWorld!';
+  getSecret(): string {
+    return process.env.SECRET;
   }
 }
