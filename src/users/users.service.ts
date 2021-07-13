@@ -25,4 +25,12 @@ export class UsersService {
       password: hashedPassword,
     });
   }
+
+  async findByEmail(email: string) {
+    const user = await this.usersRepository.findOne({ where: { email } });
+    if (!user) {
+      throw new HttpException('No user found', 404);
+    }
+    return user;
+  }
 }
