@@ -1,10 +1,12 @@
+const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
-const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
+const StartServerPlugin = require('start-server-webpack-plugin');
 
-module.exports = function (options, webpack) {
+module.exports = function (options) {
   return {
     ...options,
     entry: ['webpack/hot/poll?100', options.entry],
+    watch: true,
     externals: [
       nodeExternals({
         allowlist: ['webpack/hot/poll?100'],
@@ -13,10 +15,8 @@ module.exports = function (options, webpack) {
     plugins: [
       ...options.plugins,
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.WatchIgnorePlugin({
-        paths: [/\.js$/, /\.d\.ts$/],
-      }),
-      new RunScriptWebpackPlugin({ name: options.output.filename }),
+      new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]),
+      new StartServerPlugin({ name: options.output.filename }),
     ],
   };
 };
