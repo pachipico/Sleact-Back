@@ -10,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { IsEmail, IsString, IsNotEmpty } from 'class-validator';
 import { ChannelChats } from './ChannelChats';
 import { ChannelMembers } from './ChannelMembers';
 import { Channels } from './Channels';
@@ -24,12 +25,17 @@ export class Users {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @IsEmail()
   @Column('varchar', { name: 'email', unique: true, length: 30 })
   email: string;
 
+  @IsString()
+  @IsNotEmpty()
   @Column('varchar', { name: 'nickname', length: 30 })
   nickname: string;
 
+  @IsString()
+  @IsNotEmpty()
   @Column('varchar', { name: 'password', length: 100, select: false })
   password: string;
 
@@ -40,7 +46,7 @@ export class Users {
   updatedAt: Date;
 
   @DeleteDateColumn()
-  deletedAt: Date | null;
+  deletedAt: null;
 
   @OneToMany(() => ChannelChats, (channelchats) => channelchats.User)
   ChannelChats: ChannelChats[];

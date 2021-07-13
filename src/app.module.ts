@@ -12,6 +12,7 @@ import { WorkspacesModule } from './workspaces/workspaces.module';
 import { ChannelsModule } from './channels/channels.module';
 
 import { DmsModule } from './dms/dms.module';
+import { Users } from './entities/Users';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { DmsModule } from './dms/dms.module';
     WorkspacesModule,
     ChannelsModule,
     DmsModule,
+    TypeOrmModule.forFeature([Users]),
   ],
   controllers: [AppController],
   providers: [AppService],

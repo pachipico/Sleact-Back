@@ -7,12 +7,13 @@ import {
   Res,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { JoinRequestDto } from './dto/join.request.dto';
 import { UsersService } from './users.service';
 import { User } from '../common/decorators/user.decorator';
 import { UndefinedToNull } from 'src/common/interceptors/undefinedToNull.interceptor';
+import { UserDto } from 'src/common/dto/user.dto';
 
 @UseInterceptors(UndefinedToNull)
 @ApiTags('USER')
@@ -26,11 +27,16 @@ export class UsersController {
     return user;
   }
 
-  @Post('register')
-  postUsers(@Body() data: JoinRequestDto) {
-    this.userService.postUsers(data.email, data.password, data.nickname);
+  @Post()
+  async join(@Body() body: JoinRequestDto) {
+    await this.userService.join(body.email, body.password, body.nickname);
   }
 
+  @ApiResponse({
+    status: 200,
+    description: '성공',
+    type: UserDto,
+  })
   @Post('login')
   logIn(@User() user) {
     return user;
