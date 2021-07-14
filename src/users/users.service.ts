@@ -10,7 +10,6 @@ export class UsersService {
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
   ) {}
-  getUsers() {}
 
   async join(email: string, password: string, nickname: string) {
     const user = await this.usersRepository.findOne({ where: { email } });
@@ -24,13 +23,5 @@ export class UsersService {
       nickname,
       password: hashedPassword,
     });
-  }
-
-  async findByEmail(email: string) {
-    const user = await this.usersRepository.findOne({ where: { email } });
-    if (!user) {
-      throw new HttpException('No user found', 404);
-    }
-    return user;
   }
 }

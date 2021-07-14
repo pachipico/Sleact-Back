@@ -6,6 +6,7 @@ import {
   Req,
   Res,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -13,7 +14,8 @@ import { JoinRequestDto } from './dto/join.request.dto';
 import { UsersService } from './users.service';
 import { User } from '../common/decorators/user.decorator';
 import { UndefinedToNull } from 'src/common/interceptors/undefinedToNull.interceptor';
-import { UserDto } from 'src/common/dto/user.dto';
+import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { Users } from 'src/entities/Users';
 
 @UseInterceptors(UndefinedToNull)
 @ApiTags('USER')
@@ -32,16 +34,10 @@ export class UsersController {
     await this.userService.join(body.email, body.password, body.nickname);
   }
 
-  @ApiResponse({
-    status: 200,
-    description: '성공',
-    type: UserDto,
-  })
+  @ApiOperation({ summary: '로그인' })
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  logIn(@User() user) {
+  async login(@User() user: Users) {
     return user;
   }
-
-  @Post('logout')
-  logOut(@Req() req, @Res() res) {}
 }

@@ -13,11 +13,13 @@ import { ChannelsModule } from './channels/channels.module';
 
 import { DmsModule } from './dms/dms.module';
 import { Users } from './entities/Users';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(ormconfig),
+    AuthModule,
     UsersModule,
     WorkspacesModule,
     ChannelsModule,
