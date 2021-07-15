@@ -14,7 +14,7 @@ import { WorkspacesService } from './workspaces.service';
 @ApiTags('WORKSPACE')
 @Controller('api/workspaces')
 export class WorkspacesController {
-  constructor(private workspacesService: WorkspacesService) {}
+  constructor(private workSpacesService: WorkspacesService) {}
 
   @Get()
   getMyWorkspaces() {}
