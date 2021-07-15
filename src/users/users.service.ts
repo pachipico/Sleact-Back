@@ -1,14 +1,20 @@
-import { HttpException, Injectable, Post } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Users } from '../entities/Users';
 import bcrypt from 'bcrypt';
+import { WorkspaceMembers } from 'src/entities/WorkspaceMembers';
+import { ChannelMembers } from 'src/entities/ChannelMembers';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
+    @InjectRepository(WorkspaceMembers)
+    private workspaceMembersRepository: Repository<WorkspaceMembers>,
+    @InjectRepository(ChannelMembers)
+    private channelMembersRepository: Repository<ChannelMembers>,
   ) {}
 
   async join(email: string, password: string, nickname: string) {
@@ -18,10 +24,19 @@ export class UsersService {
     }
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    await this.usersRepository.save({
+    const returned = await this.usersRepository.save({
       email,
       nickname,
       password: hashedPassword,
     });
+    await this.workspaceMembersRepository.save({
+      UserId: returned.id,
+      WorkspaceId: 1,
+    });
+    await this.channelMembersRepository.save({
+      UserId: returned.id,
+      ChannelId: 1,
+    });
+    return true;
   }
 }
