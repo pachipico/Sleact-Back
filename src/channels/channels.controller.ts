@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Post, UseInterceptors } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UndefinedToNull } from 'src/common/interceptors/undefinedToNull.interceptor';
 import { ChannelsService } from './channels.service';
@@ -13,7 +13,7 @@ export class ChannelsController {
   getAllChannels() {}
 
   @Get(':name')
-  getSpecificChannel() {}
+  getSpecificChannel(@Param('name') name: string) {}
 
   @Get(':name/chats')
   getChats() {}
