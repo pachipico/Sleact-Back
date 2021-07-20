@@ -110,4 +110,12 @@ export class WorkspacesService {
       )
       .getOne();
   }
+
+  async findMyWorkspace(myId: number) {
+    return await this.workspacesRepository.find({
+      where: {
+        WorkspaceMembers: [{ UserId: myId }],
+      },
+    });
+  }
 }
