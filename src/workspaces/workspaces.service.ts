@@ -59,7 +59,7 @@ export class WorkspacesService {
   }
 
   getWorkspaceMembers(url: string) {
-    return this.workspacesRepository
+    return this.usersRepository
       .createQueryBuilder('user')
       .innerJoin('user.WorkspaceMembers', 'members')
       .innerJoin('members.Workspace', 'workspace', 'workspace.url = :url', {
@@ -78,6 +78,7 @@ export class WorkspacesService {
         },
       },
     });
+
     const user = await this.usersRepository.findOne({ where: { email } });
 
     if (!user) {

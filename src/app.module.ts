@@ -11,9 +11,11 @@ import { UsersModule } from './users/users.module';
 import { WorkspacesModule } from './workspaces/workspaces.module';
 import { ChannelsModule } from './channels/channels.module';
 
-import { DmsModule } from './dms/dms.module';
+import { DMsModule } from './dms/dms.module';
 import { Users } from './entities/Users';
 import { AuthModule } from './auth/auth.module';
+import { EventsModule } from './events/events.module';
+import { EventsGateway } from './events/events.gateway';
 
 @Module({
   imports: [
@@ -23,11 +25,12 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     WorkspacesModule,
     ChannelsModule,
-    DmsModule,
+    DMsModule,
     TypeOrmModule.forFeature([Users]),
+    EventsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, EventsGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

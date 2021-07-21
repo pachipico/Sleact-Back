@@ -23,12 +23,12 @@ export class WorkspacesController {
   constructor(private workSpacesService: WorkspacesService) {}
 
   @Get()
-  getMyWorkspaces(@User() user: Users) {
+  async getMyWorkspaces(@User() user: Users) {
     return this.workSpacesService.findMyWorkspaces(user.id);
   }
 
   @Post()
-  createWorkspace(@User() user: Users, @Body() body: createWorkspaceDto) {
+  async createWorkspace(@User() user: Users, @Body() body: createWorkspaceDto) {
     return this.workSpacesService.createWorkspace(
       body.workspace,
       body.url,
@@ -37,13 +37,17 @@ export class WorkspacesController {
   }
 
   @Get(':url/members')
-  getAllMembersFromWorkspace(@Query('url') url) {}
+  async getAllMembersFromWorkspace(@Param('url') url: string) {
+    return this.workSpacesService.getWorkspaceMembers(url);
+  }
 
   @Post(':url/members')
-  inviteMembersToWorkspace(@Query('url') url) {}
+  inviteMembersToWorkspace(@Param('url') url) {}
 
   @Get(':url/members/:id')
-  getMemberInfoInWorkspace(@Query() query) {}
+  async getMemberInfoInWorkspace(@Query() query) {
+    return this.workSpacesService.findById(query.id);
+  }
 
   @Delete()
   kickMemberFromWorkspace() {}
