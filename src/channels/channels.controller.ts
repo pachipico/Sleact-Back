@@ -92,7 +92,7 @@ export class ChannelsController {
   )
   @Post(':name/images')
   postImages(
-    @UploadedFiles() file: Express.Multer.File[],
+    @UploadedFiles() files: Express.Multer.File[],
     @Param('url') url: string,
     @Param('name') name: string,
     @User() user: Users,
@@ -100,7 +100,7 @@ export class ChannelsController {
     return this.channelsService.createWorkspaceChannelImages(
       url,
       name,
-      file,
+      files,
       user.id,
     );
   }

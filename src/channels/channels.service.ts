@@ -189,22 +189,20 @@ export class ChannelsService {
       })
       .where('channel.name = :name', { name })
       .getOne();
-    if (!channel) {
-      throw new NotFoundException('Channel not found');
-    }
     for (let i = 0; i < files.length; i++) {
       const chats = new ChannelChats();
+      chats.content = files[i].path;
       chats.UserId = myId;
       chats.ChannelId = channel.id;
-      chats.content = files[i].path;
       const savedChat = await this.channelChatsRepository.save(chats);
-      const chatWithUsers = await this.channelChatsRepository.findOne({
+      const chatWithUser = await this.channelChatsRepository.findOne({
         where: { id: savedChat.id },
-        relations: ['User', 'Workspace'],
+        relations: ['User', 'Channel'],
       });
       this.eventsGateway.server
-        .to(`/ws-${url}-${chatWithUsers.ChannelId}`)
-        .emit('message', chatWithUsers);
+        // .of(`/ws-${url}`)
+        .to(`/ws-${url}-${chatWithUser.ChannelId}`)
+        .emit('message', chatWithUser);
     }
   }
 }
